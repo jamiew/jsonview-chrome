@@ -21,12 +21,16 @@
 this.data = document.body.innerHTML;
 this.uri = document.location.href;
 
-var is_json = /^\s*(\{.*\})\s*$/.test(this.data);
-var is_jsonp = /^.*\(\s*(\{.*\})\s*\)$/.test(this.data);
+// Note: now using "*.json*" URI matching rather than these page regexes -- save CPU cycles!
+// var is_json = /^\s*(\{.*\})\s*$/.test(this.data);
+// var is_jsonp = /^.*\(\s*(\{.*\})\s*\)$/.test(this.data);
+// if(is_json || is_jsonp){
 
-if(is_json || is_jsonp){
+// For manifest .json matching -- strip <pre> tags added by Chrome >:| -- FIXME!
+this.data = this.data.replace(/<(?:.|\s)*?>/g, '');  
+if(true){
    
-  console.log("JSONView: sexytime");
+  // console.log("JSONView: sexytime");
 
   // JSONFormatter json->HTML prototype straight from Firefox JSONView
   // For reference: http://code.google.com/p/jsonview
@@ -133,8 +137,8 @@ if(is_json || is_jsonp){
     errorPage: function(error, data, uri) {
       // var output = '<div id="error">' + this.stringbundle.GetStringFromName('errorParsing') + '</div>';
       // output += '<h1>' + this.stringbundle.GetStringFromName('docContents') + ':</h1>';
-      var output = '<div id="error">' + 'ERROR PARSING...' + '</div>';
-      output += '<h1>' + 'this should be the rror...' + ':</h1>';      
+      var output = '<div id="error">Error parsing JSON: '+error.message+'</div>';
+      output += '<h1>'+error.stack+':</h1>';      
       output += '<div id="json">' + this.htmlEncode(data) + '</div>';
       return this.toHTML(output, uri + ' - Error');
     },
@@ -203,5 +207,5 @@ if(is_json || is_jsonp){
   
 }
 else {
-  console.log("JSONView: this is not json, not formatting.");
+  // console.log("JSONView: this is not json, not formatting.");
 }
