@@ -1,0 +1,30 @@
+h2. JSONView for Chrome
+
+Formats & syntax highlights JSON viewed inside of the web browser! Yay
+
+A Chrome port of Ben Hollis' JSONView extension for Firefox: http://jsonview.com
+
+You too can enjoy JSON as it was intended:
+!https://addons.mozilla.org/en-US/firefox/images/p/29967/123796716!
+
+h2. Ghetto JSON type detection
+
+Chrome doesn't currently support exposing mimetypes to extensions:
+* "relevant thread #1":http://groups.google.com/group/chromium-extensions/browse_thread/thread/3f287f74db3fe941/a217c9d4b633e1fc?lnk=gst&q=content+type#a217c9d4b633e1fc
+* "relevant thread #2":http://groups.google.com/group/chromium-extensions/browse_thread/thread/6deeb0f8cf75090a/ae984e9d5897d779?lnk=gst&q=content+type#ae984e9d5897d779
+
+In lieu we're only matching URIs containing ".json" -- rather than running regexes on *every* pageload.
+
+If you don't mind the performance impact and want to try and parse everything, this is a simple change in manifest.json
+
+bq.
+	"matches": [ "http://*/*.json*", "file:///*/*.json*" ]
+	=>
+	"matches": [ "http://*/*", "file:///*/*" ] 
+
+h2. Authors
+
+* "Ben Hollis"::http://benhollis.net "@bhollis":http://twitter.com/bhollis (JSONView for Firefox) 
+* "Jamie Wilkinson":http://jamiedubs.com "@jamiew":http://twitter.com/jamiew (Chrome port) http://jamiedubs.com
+
+MIT Licensed
