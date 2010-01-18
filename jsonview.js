@@ -19,6 +19,8 @@
 // Perhaps do some simple URL parsing instead to save time regexing the whole document all the time :x
 // e.g. if it's .html/.css/.php/etc assume it's not JSON (though w/ PHP that might not be the case..)
 this.data = document.body.innerHTML;
+this.uri = document.location.href;
+
 var is_json = /^\s*(\{.*\})\s*$/.test(this.data);
 var is_jsonp = /^.*\(\s*(\{.*\})\s*\)$/.test(this.data);
 

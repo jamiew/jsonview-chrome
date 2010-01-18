@@ -5,7 +5,7 @@
    } ],
 	"icons": { "48": "logo48.png",
 	          "128": "logo128.png" },
-   "description": "Displays JSON data in a user-friendly manner. Based on Firefox JSONView & Chrome XML Tree",
+   "description": "Pretty-prints JSON data in the browser.",
    "key": "supfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDhKAwhHMEEr5pw/QvMhtfEgh5AOX7v39DYK0l48jxvpjl2syoYsZxkC57n0nORQQh8ndLuNW8KZP4R9AkEFhXctAen28e6MKDBGg0TJaTtWkmB8Wc2sN/LNq6iJeFIebkID5TAVuqqfTpO3NOo9V+6o+bH85j8u78YOb4ZZ1U8wIDAQAB",
    "name": "JSONView",
    "version": "1.0"
