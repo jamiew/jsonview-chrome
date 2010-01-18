@@ -7,9 +7,10 @@
  * http://jsonview.com 
  * http://code.google.com/p/jsonview
  *
- * Also based on the XMLTree Chrome extension by Moonty: 
+ * Also based on the XMLTree Chrome extension by Moonty & alan.stroop
+ * https://chrome.google.com/extensions/detail/gbammbheopgpmaagmckhpjbfgdfkpadb
  *
- * by Jamie Wilkinson (@jamiew) | http://jamiedubs.com | http://github.com/jamiew
+ * port by Jamie Wilkinson (@jamiew) | http://jamiedubs.com | http://github.com/jamiew
  * MIT license / copyfree (f) F.A.T. Lab http://fffff.at
  * Speed Project Approved: 2h
 */
@@ -25,12 +26,25 @@ this.uri = document.location.href;
 // var is_json = /^\s*(\{.*\})\s*$/.test(this.data);
 // var is_jsonp = /^.*\(\s*(\{.*\})\s*\)$/.test(this.data);
 // if(is_json || is_jsonp){
+  
+// Our manifest specifies that we only do URLs matching '.json', so attempt to sanitize any HTML
+// added by Chrome's "text/plain" or "text/html" handlers
+if(/^\<pre.*\>(.*)\<\/pre\>$/.test(this.data)){  
+  console.log("JSONView: data is wrapped in <pre>...</pre>, stripping HTML...");  
+  this.data = this.data.replace(/<(?:.|\s)*?>/g, ''); //Aggressively strip HTML.
+}
 
-// For manifest .json matching -- strip <pre> tags added by Chrome >:| -- FIXME!
-this.data = this.data.replace(/<(?:.|\s)*?>/g, '');  
-if(true){
+// Test if what remains is JSON or JSONp
+var json_regex = /^\s*([\[\{].*[\}\]])\s*$/; // Ghetto, but it works
+var jsonp_regex = /^[\s\u200B\uFEFF]*([\w$\[\]\.]+)[\s\u200B\uFEFF]*\([\s\u200B\uFEFF]*([\[{][\s\S]*[\]}])[\s\u200B\uFEFF]*\);?[\s\u200B\uFEFF]*$/;
+var jsonp_regex2 = /([\[\{][\s\S]*[\]\}])\);/ // more liberal support... this allows us to pass the jsonp.json & jsonp2.json tests
+var is_json = json_regex.test(this.data);
+var is_jsonp = jsonp_regex.test(this.data);
+console.log("JSONView: is_json="+is_json+" is_jsonp="+is_jsonp);
+
+if(is_json || is_jsonp){
    
-  // console.log("JSONView: sexytime");
+  console.log("JSONView: sexytime!");
 
   // JSONFormatter json->HTML prototype straight from Firefox JSONView
   // For reference: http://code.google.com/p/jsonview
@@ -178,14 +192,17 @@ if(true){
   var cleanData = '',
       callback = '';
 
-  var callback_results = /^[\s\u200B\uFEFF]*([\w$\[\]\.]+)[\s\u200B\uFEFF]*\([\s\u200B\uFEFF]*([\[{][\s\S]*[\]}])[\s\u200B\uFEFF]*\);?[\s\u200B\uFEFF]*$/.exec(this.data);
+  var callback_results = jsonp_regex.exec(this.data);
   if( callback_results && callback_results.length == 3 ){
+    console.log("THIS IS JSONp");
     callback = callback_results[1];
     cleanData = callback_results[2];
   } else {
+    console.log("Vanilla JSON");
     cleanData = this.data;
   }
-    
+  console.log(cleanData);
+  
   // Covert, and catch exceptions on failure
   try {
     // var jsonObj = this.nativeJSON.decode(cleanData);
