@@ -159,10 +159,36 @@ if(is_json || is_jsonp){
 
     // Wrap the HTML fragment in a full document. Used by jsonToHTML and errorPage.
     toHTML: function(content, title) {
+	  //content from 'default.css' injected as inline in order to work on iframe's
+	  var css = '<style type="text/css">' +
+	  	'body {font-family: sans-serif;}' +
+		'.prop {font-weight: bold;}' +
+		'.null {color: red;}' +
+		'.bool {color: blue;}' + 
+		'.num {color: blue;}' +
+		'.string {color: green;}' +
+		'.collapser {position: absolute; left: -1em; cursor: pointer;}' +
+		'li {position: relative;}' +
+		'li:after {content: \',\';}' +
+		'li:last-child:after {content: \'\';}' +
+		'#error {-moz-border-radius: 8px; border: 1px solid #970000; background-color: #F7E8E8; margin: .5em; padding: .5em; }' +
+		'.errormessage {font-family: monospace;}' +
+		'#json { font-family: monospace; font-size: 1.1em; }' +
+		'ul { list-style: none; margin: 0 0 0 2em; padding: 0; }' +
+		'h1 { font-size: 1.2em; }' +
+		'.callback + #json { padding-left: 1em;	}' +
+		'.callback { font-family: monospace; color: #A52A2A; }' +
+		'</style>';
+	  
+	  //content from 'default.js' injected as inline in order to work on iframe's
+	  var jscript = 
+		  '<script type="text/javascript">' +
+		  "document.addEventListener('DOMContentLoaded', function() { function collapse(evt) { var collapser = evt.target; var target = collapser.parentNode.getElementsByClassName('collapsible'); if ( ! target.length ) { return; } target = target[0]; if ( target.style.display == 'none' ) { var ellipsis = target.parentNode.getElementsByClassName('ellipsis')[0]; target.parentNode.removeChild(ellipsis); target.style.display = ''; } else { target.style.display = 'none'; var ellipsis = document.createElement('span'); ellipsis.className = 'ellipsis'; ellipsis.innerHTML = ' &hellip; '; target.parentNode.insertBefore(ellipsis, target); } collapser.innerHTML = ( collapser.innerHTML == '-' ) ? '+' : '-'; } function addCollapser(item) { if ( item.nodeName != 'LI' ) { return; } var collapser = document.createElement('div'); collapser.className = 'collapser'; collapser.innerHTML = '-'; collapser.addEventListener('click', collapse, false); item.insertBefore(collapser, item.firstChild); } var items = document.getElementsByClassName('collapsible'); for( var i = 0; i < items.length; i++) { addCollapser(items[i].parentNode); } }, false); " +
+		  "</script>"
+    		  
       return '<doctype html>' + 
         '<html><head><title>' + title + '</title>' +
-        '<link rel="stylesheet" type="text/css" href="'+chrome.extension.getURL("default.css")+'">' + 
-        '<script type="text/javascript" src="'+chrome.extension.getURL("default.js")+'"></script>' + 
+        css + jscript +
         '</head><body>' +
         content + 
         '</body></html>';
@@ -217,10 +243,7 @@ if(is_json || is_jsonp){
     outputDoc = this.jsonFormatter.errorPage(e, this.data, this.uri);
   }
 
-
-  var links = '<link rel="stylesheet" type="text/css" href="'+chrome.extension.getURL("default.css")+'">' + 
-              '<script type="text/javascript" src="'+chrome.extension.getURL("default.js")+'"></script>';
-  document.body.innerHTML = links + outputDoc;
+  document.body.innerHTML = outputDoc;
   
 }
 else {
