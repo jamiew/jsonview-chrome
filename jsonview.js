@@ -79,7 +79,8 @@ if(is_json || is_jsonp){
       }
       else if (valueType == 'string') {
         if (/^(http|https):\/\/[^\s]+$/.test(value)) {
-          output += '<a href="' + value + '">' + this.htmlEncode(value) + '</a>';
+          value = this.htmlEncode(value);
+          output += '<a href="' + value + '">' + value + '</a>';
         } else {
           output += this.decorateWithSpan('"' + value + '"', 'string');
         }
