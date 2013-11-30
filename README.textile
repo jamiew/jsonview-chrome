@@ -2,6 +2,8 @@ h2. JSONView for Chrome
 
 Formats & syntax highlights JSON viewed inside of the web browser! Yay
 
+*PLEASE NOTE*: this codebase is currently unmaintained, and is unrelated to the JSONView extension "available in the Chrome store":https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc – that said, many people seem to be using it to great success, and pull requests or a new maintainer are always welcome.
+
 A Chrome port of Ben Hollis' JSONView extension for Firefox: http://jsonview.com
 
 You too can enjoy JSON as it was intended:
