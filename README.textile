@@ -5,7 +5,7 @@ Formats & syntax highlights JSON viewed inside of the web browser! Yay
 A Chrome port of Ben Hollis' JSONView extension for Firefox: http://jsonview.com
 
 You too can enjoy JSON as it was intended:
-!https://addons.mozilla.org/en-US/firefox/images/p/29967/123796716!
+!https://addons.cdn.mozilla.net/img/uploads/previews/full/29/29967.png?modified=1331247702!
 
 h2. Ghetto JSON type detection
 
